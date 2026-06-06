@@ -1,0 +1,31 @@
+{
+  "name": "artifact-sweeper",
+  "version": "1.0.0",
+  "description": "GitHub Action that deletes old workflow artifacts and caches via the REST API to reclaim Actions storage, with a safe dry-run default.",
+  "private": true,
+  "main": "src/index.js",
+  "scripts": {
+    "test": "node --test",
+    "build": "ncc build src/index.js -o dist"
+  },
+  "keywords": [
+    "github-actions",
+    "artifacts",
+    "cache",
+    "storage",
+    "cleanup"
+  ],
+  "author": "amoussa1229",
+  "license": "MIT",
+  "type": "commonjs",
+  "overrides": {
+    "undici": "^6.26.0"
+  },
+  "dependencies": {
+    "@actions/core": "^1.11.1",
+    "@actions/github": "^6.0.1"
+  },
+  "devDependencies": {
+    "@vercel/ncc": "^0.38.4"
+  }
+}

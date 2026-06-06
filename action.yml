@@ -1,0 +1,54 @@
+name: "artifact-sweeper"
+description: "Delete old workflow artifacts and caches via the REST API to reclaim Actions storage, with a safe dry-run default."
+author: "amoussa1229"
+branding:
+  icon: "trash-2"
+  color: "red"
+
+inputs:
+  older-than-days:
+    description: >-
+      Only sweep items older than this many days. Artifacts are aged from their
+      creation time; caches from their last-accessed time. Non-negative integer.
+    required: false
+    default: "30"
+  include-caches:
+    description: 'Whether to sweep Actions caches ("true"/"false").'
+    required: false
+    default: "true"
+  include-artifacts:
+    description: 'Whether to sweep workflow artifacts ("true"/"false").'
+    required: false
+    default: "true"
+  name-pattern:
+    description: >-
+      Optional glob matched against the artifact name / cache key. Supports
+      *, ?, and **. Empty matches everything.
+    required: false
+    default: ""
+  confirm:
+    description: >-
+      Set to "true" to actually delete. Defaults to "false" (dry-run): the
+      action only reports what it would delete and performs zero deletions.
+    required: false
+    default: "false"
+  github-token:
+    description: "Token used to list and delete artifacts/caches. Needs actions:write to delete."
+    required: false
+    default: ${{ github.token }}
+
+outputs:
+  deleted-count:
+    description: "Number of items actually deleted (0 in dry-run)."
+  reclaimed-bytes:
+    description: "Total bytes actually freed (0 in dry-run)."
+  dry-run:
+    description: 'Whether this was a dry-run ("true"/"false").'
+  report:
+    description: >-
+      JSON array of {type, id, name, created_at, size_in_bytes, action} where
+      action is "would-delete" (dry-run) or "deleted".
+
+runs:
+  using: "node24"
+  main: "dist/index.js"
